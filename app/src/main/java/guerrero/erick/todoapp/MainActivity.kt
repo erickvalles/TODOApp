@@ -9,12 +9,16 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var etTitulo: EditText
     lateinit var btnGuardar:Button
-    lateinit var listaElementos:ListView
+    lateinit var listaTareas:RecyclerView
+    lateinit var adapter:TareasAdapter
 
     private val tareasViewModel:TareasViewModel by viewModels()
 
@@ -24,17 +28,25 @@ class MainActivity : AppCompatActivity() {
 
         etTitulo = findViewById(R.id.etNombre)
         btnGuardar = findViewById(R.id.btnGuardar)
-        listaElementos = findViewById(R.id.lvElementos)
+        listaTareas = findViewById(R.id.rvTareas)
 
-        tareasViewModel.elementos.add("Hola")
-        tareasViewModel.elementos.add("Mundo")
-        val adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,tareasViewModel.elementos)
+        tareasViewModel.elementos.add(
+            Tarea("Dar mi clase",
+                "Es la de android",
+            false)
+        )
 
-        listaElementos.adapter = adapter
+        adapter = TareasAdapter(tareasViewModel.elementos)
+
+        listaTareas.adapter = adapter
+        listaTareas.layoutManager = GridLayoutManager(this,
+            1)
+
         btnGuardar.setOnClickListener {
 
-            val contenido = etTitulo.text.toString()
-            tareasViewModel.elementos.add(contenido)
+            val titulo = etTitulo.text.toString()
+            tareasViewModel.elementos.add(Tarea(titulo,"Una descripción",false))
+
             adapter.notifyDataSetChanged()
             Toast.makeText(this,"${tareasViewModel.elementos.size}",Toast.LENGTH_SHORT).show()
         }

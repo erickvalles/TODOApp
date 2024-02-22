@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardar)
         listaTareas = findViewById(R.id.rvTareas)
 
+
+
+        //lo que sea
         tareasViewModel.elementos.add(
             Tarea("Dar mi clase",
                 "Es la de android",
